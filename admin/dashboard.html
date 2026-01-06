@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+<!-- ===== TOP GRID ===== -->
+<div style="
+  max-width:900px;
+  margin:40px auto;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:25px;
+">
+
+  <!-- APPROVED IDS -->
+  <div class="main-card">
+    <h2>Approved Villager IDs</h2>
+    <ul id="approvedList" style="margin-top:15px;"></ul>
+
+    <!-- OLD LINK (KEPT) -->
+    <a href="add-villager.html"
+       class="btn admin"
+       style="margin-top:15px;display:none;">
+      ➕ Approve New ID
+    </a>
+
+    <!-- INLINE APPROVE BUTTON -->
+    <button class="btn admin"
+            style="margin-top:15px;"
+            onclick="toggleApproveBox()">
+      ➕ Approve New ID
+    </button>
+
+    <div id="approveBox" style="display:none;margin-top:20px;">
+      <input type="text"
+             id="newVillagerId"
+             placeholder="Enter Villager ID">
+
+      <button onclick="approveVillagerInline()">
+        ✅ Approve Villager
+      </button>
+
+      <p id="approveMsg" style="margin-top:10px;"></p>
+    </div>
+  </div>
+
+  <!-- LEADERBOARD -->
+  <div class="main-card">
+    <h2>Leaderboard (Points)</h2>
+    <table style="width:100%;margin-top:15px;">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Points</th>
+        </tr>
+      </thead>
+      <tbody id="leaderboardRows"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== LAST ROW : 3 BOXES ===== -->
+<div style="
+  max-width:1200px;
+  margin:20px auto;
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:25px;
+">
+
+  <!-- REMOVE LOGIN -->
+  <div class="main-card">
+    <h2>Remove Login Access</h2>
+    <input type="text"
+           id="removeLoginInput"
+           placeholder="Villager ID">
+    <button onclick="removeLoginAccess()">🚫 Remove</button>
+    <p id="removeLoginMsg"></p>
+  </div>
+
+  <!-- REMOVE FROM LEADERBOARD -->
+  <div class="main-card">
+    <h2>Remove from Leaderboard</h2>
+    <input type="text"
+           id="removeIdInput"
+           placeholder="Villager ID">
+    <button onclick="removeFromLeaderboard()">Remove</button>
+    <p id="removeMsg"></p>
+  </div>
+
+  <!-- RENAME ID -->
+  <div class="main-card">
+    <h2>Rename Villager ID</h2>
+    <input type="text" id="oldId" placeholder="Old ID">
+    <input type="text" id="newId" placeholder="New ID">
+    <button onclick="renameVillagerId()">✏ Rename</button>
+    <p id="renameMsg"></p>
+  </div>
+
+</div>
+
+<script>
+/* ===== APPROVED IDS ===== */
+const approvedList = document.getElementById("approvedList");
+
+function renderApprovedIds() {
+  const approvedIds =
+    JSON.parse(localStorage.getItem("approvedIds")) || [];
+
+  approvedList.innerHTML = "";
+
+  if (!approvedIds.length) {
+    approvedList.innerHTML = "<li>No approved IDs</li>";
+    return;
+  }
+
+  approvedIds.forEach(id => {
+    const li = document.createElement("li");
+    li.textContent = id;
+    approvedList.appendChild(li);
+  });
+}
+
+/* ===== LEADERBOARD ===== */
+const leaderboardBody =
+  document.getElementById("leaderboardRows");
+
+function renderLeaderboard() {
+  const leaderboard =
+    JSON.parse(localStorage.getItem("leaderboard")) || {};
+
+  leaderboardBody.innerHTML = "";
+
+  const entries = Object.entries(leaderboard);
+
+  if (!entries.length) {
+    leaderboardBody.innerHTML =
+      "<tr><td colspan='2'>No data</td></tr>";
+    return;
+  }
+
+  entries.sort((a,b)=>b[1]-a[1])
+    .forEach(([id,points])=>{
+      leaderboardBody.innerHTML +=
+        `<tr><td>${id}</td><td>${points}</td></tr>`;
+    });
+}
+
+/* ===== REMOVE LOGIN ===== */
+function removeLoginAccess() {
+  const id = removeLoginInput.value.trim();
+  let ids = JSON.parse(localStorage.getItem("approvedIds")) || [];
+  ids = ids.filter(v => v !== id);
+  localStorage.setItem("approvedIds", JSON.stringify(ids));
+  removeLoginMsg.textContent = "✅ Login removed";
+  renderApprovedIds();
+}
+
+/* ===== REMOVE FROM LEADERBOARD ===== */
+function removeFromLeaderboard() {
+  const id = removeIdInput.value.trim();
+  let lb = JSON.parse(localStorage.getItem("leaderboard")) || {};
+  delete lb[id];
+  localStorage.setItem("leaderboard", JSON.stringify(lb));
+  removeMsg.textContent = "✅ Removed";
+  renderLeaderboard();
+}
+
+/* ===== TOGGLE APPROVE BOX ===== */
+function toggleApproveBox() {
+  approveBox.style.display =
+    approveBox.style.display === "none" ? "block" : "none";
+}
+
+/* ================================================= */
+/* ========== ✅ UPDATED INLINE APPROVE LOGIC ======= */
+/* ================================================= */
+function approveVillagerInline() {
+  const id =
+    document.getElementById("newVillagerId").value.trim();
+
+  if (!id) {
+    alert("Enter Villager ID");
+    return;
+  }
+
+  /* Approved IDs */
+  let approvedIds =
+    JSON.parse(localStorage.getItem("approvedIds")) || [];
+
+  if (!approvedIds.includes(id)) {
+    approvedIds.push(id);
+    localStorage.setItem(
+      "approvedIds",
+      JSON.stringify(approvedIds)
+    );
+  }
+
+  /* 🔥 NEW: AUTO ADD TO LEADERBOARD WITH 0 POINTS */
+  let leaderboard =
+    JSON.parse(localStorage.getItem("leaderboard")) || {};
+
+  if (leaderboard[id] === undefined) {
+    leaderboard[id] = 0;   // 👈 DEFAULT SCORE
+    localStorage.setItem(
+      "leaderboard",
+      JSON.stringify(leaderboard)
+    );
+  }
+
+  document.getElementById("approveMsg").textContent =
+    "✅ Villager Approved & Added to Leaderboard";
+
+  document.getElementById("newVillagerId").value = "";
+
+  renderApprovedIds();
+  renderLeaderboard();
+}
+
+/* ===== RENAME ID ===== */
+function renameVillagerId() {
+  const oldId = oldIdInput.value.trim();
+  const newId = newIdInput.value.trim();
+
+  if (!oldId || !newId) {
+    renameMsg.textContent = "❌ Enter both IDs";
+    return;
+  }
+
+  let approvedIds =
+    JSON.parse(localStorage.getItem("approvedIds")) || [];
+
+  if (!approvedIds.includes(oldId)) {
+    renameMsg.textContent = "❌ Old ID not found";
+    return;
+  }
+
+  approvedIds = approvedIds.map(id =>
+    id === oldId ? newId : id);
+
+  localStorage.setItem(
+    "approvedIds",
+    JSON.stringify(approvedIds)
+  );
+
+  let leaderboard =
+    JSON.parse(localStorage.getItem("leaderboard")) || {};
+
+  if (leaderboard[oldId] !== undefined) {
+    leaderboard[newId] = leaderboard[oldId];
+    delete leaderboard[oldId];
+    localStorage.setItem(
+      "leaderboard",
+      JSON.stringify(leaderboard)
+    );
+  }
+
+  renameMsg.textContent = "✅ ID Renamed";
+  renderApprovedIds();
+  renderLeaderboard();
+}
+
+/* ===== INIT ===== */
+renderApprovedIds();
+renderLeaderboard();
+</script>
+
+</body>
+</html>

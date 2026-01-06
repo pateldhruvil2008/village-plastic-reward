@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Leaderboard</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+  <!-- ================= NAVBAR (ADDED) ================= -->
+  <nav class="navbar">
+    <div class="nav-logo">
+      🌱 Plastic Reward System
+    </div>
+
+    <div class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../login.html">Login</a>
+      <a href="dashboard.html">Dashboard</a>
+    </div>
+  </nav>
+
+  <!-- 🔐 LOGIN CHECK (EXISTING) -->
+  <script>
+    if (!localStorage.getItem("villagerId")) {
+      window.location.href = "../login.html";
+    }
+  </script>
+
+  <h2 style="text-align:center;margin-top:140px;">
+    🏆 Village Leaderboard
+  </h2>
+
+  <!-- ================= EXISTING LEADERBOARD CARD ================= -->
+  <div class="main-card" style="margin:20px auto;">
+    <table style="width:100%;">
+      <tr>
+        <th>Villager ID</th>
+        <th>Points</th>
+      </tr>
+      <tbody id="board"></tbody>
+    </table>
+  </div>
+
+  <!-- ================= EXISTING SCRIPT ================= -->
+  <script>
+    const leaderboard =
+      JSON.parse(localStorage.getItem("leaderboard")) || {};
+
+    const board = document.getElementById("board");
+
+    const entries = Object.entries(leaderboard);
+
+    if (entries.length === 0) {
+      board.innerHTML =
+        "<tr><td colspan='2'>No data</td></tr>";
+    }
+
+    entries
+      .sort((a, b) => b[1] - a[1])
+      .forEach(([id, points]) => {
+        board.innerHTML += `
+          <tr>
+            <td>${id}</td>
+            <td>${points}</td>
+          </tr>
+        `;
+      });
+  </script>
+
+  <!-- ================= EXISTING NAVIGATION (UNCHANGED) ================= -->
+  <div class="btn-group" style="margin:20px auto 120px;">
+    <a href="dashboard.html"
+       target="sideView"
+       class="btn villager">
+      🏠 Dashboard
+    </a>
+
+    <a href="submit-plastic.html"
+       target="sideView"
+       class="btn villager">
+      ♻ Submit Plastic
+    </a>
+
+    <a href="../index.html" class="btn villager">
+      🏠 Home
+    </a>
+  </div>
+
+  <!-- ================= FOOTER (ADDED) ================= -->
+  <footer class="footer">
+    © 2026 Village Plastic Reward System <br>
+    Government Initiative
+  </footer>
+
+</body>
+</html>

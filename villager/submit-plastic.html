@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Submit Plastic</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body class="center-page">
+
+  <!-- ================= NAVBAR (ADDED) ================= -->
+  <nav class="navbar">
+    <div class="nav-logo">
+      🌱 Plastic Reward System
+    </div>
+
+    <div class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../login.html">Login</a>
+      <a href="leaderboard.html">Leaderboard</a>
+    </div>
+  </nav>
+
+  <!-- 🔐 LOGIN CHECK (EXISTING) -->
+  <script>
+    if (!localStorage.getItem("villagerId")) {
+      window.location.href = "../login.html";
+    }
+  </script>
+
+  <!-- ================= EXISTING CARD (UNCHANGED) ================= -->
+  <div class="main-card">
+    <h2>Submit Plastic</h2>
+
+    <input type="number" id="kg" placeholder="Plastic in KG">
+    <button onclick="submitPlastic()">Submit</button>
+
+    <!-- ================= EXISTING NAV BUTTONS ================= -->
+    <div class="btn-group" style="margin-top:20px;">
+      <a href="leaderboard.html"
+         target="sideView"
+         class="btn admin">
+        🏆 View Leaderboard
+      </a>
+
+      <a href="dashboard.html"
+         target="sideView"
+         class="btn villager">
+        🏠 Dashboard
+      </a>
+    </div>
+  </div>
+
+  <!-- ================= FOOTER (ADDED) ================= -->
+  <footer class="footer">
+    © 2026 Village Plastic Reward System <br>
+    Government Initiative
+  </footer>
+
+  <!-- ================= EXISTING SCRIPT (UNCHANGED) ================= -->
+  <script>
+    function submitPlastic() {
+      const kg = Number(document.getElementById("kg").value);
+      const id = localStorage.getItem("villagerId");
+
+      if (!kg || kg <= 0) {
+        alert("Enter valid weight");
+        return;
+      }
+
+      let leaderboard =
+        JSON.parse(localStorage.getItem("leaderboard")) || {};
+
+      // ✅ ALWAYS NUMBER
+      if (typeof leaderboard[id] !== "number") {
+        leaderboard[id] = 0;
+      }
+
+      leaderboard[id] = leaderboard[id] + (kg * 10);
+
+      localStorage.setItem(
+        "leaderboard",
+        JSON.stringify(leaderboard)
+      );
+
+      alert("Points added successfully");
+      document.getElementById("kg").value = "";
+    }
+  </script>
+
+</body>
+</html>

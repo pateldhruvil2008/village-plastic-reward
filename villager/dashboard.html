@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Villager Dashboard</title>
+  <link rel="stylesheet" href="../css/style.css">
+
+  <style>
+    /* ===== PAGE CENTER ===== */
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* navbar space handle */
+    .page-content {
+      flex: 1;
+      display: flex;
+      align-items: center;     /* 🔥 vertical center */
+      justify-content: center; /* 🔥 horizontal center */
+    }
+
+    /* ===== TWO PANEL LAYOUT ===== */
+    .villager-wrapper {
+      width: 100%;
+      max-width: 1300px;
+      display: grid;
+      grid-template-columns: 1fr 2.1fr;
+      gap: 35px;
+      padding: 0 25px;
+    }
+
+    /* ===== MOBILE ===== */
+    @media (max-width: 900px) {
+      .villager-wrapper {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<nav class="navbar">
+  <div class="nav-logo">
+    🌱 Plastic Reward System
+  </div>
+
+  <div class="nav-links">
+    <a href="../index.html">Home</a>
+    <a href="../login.html">Login</a>
+    <a href="leaderboard.html">Leaderboard</a>
+  </div>
+</nav>
+
+<!-- 🔐 LOGIN CHECK -->
+<script>
+  if (!localStorage.getItem("villagerId")) {
+    window.location.href = "../login.html";
+  }
+</script>
+
+<!-- ================= CENTERED CONTENT ================= -->
+<div class="page-content">
+
+  <div class="villager-wrapper">
+
+    <!-- ===== LEFT PANEL ===== -->
+    <div class="main-card">
+      <h2>Villager Dashboard</h2>
+
+      <p>
+        <strong>ID:</strong>
+        <span id="vid"></span>
+      </p>
+
+      <p>&nbsp;</p>
+
+      <div class="btn-group">
+        <a href="submit-plastic.html"
+           target="sideView"
+           class="btn villager">
+          ♻ Submit Plastic
+        </a>
+
+        <a href="leaderboard.html"
+           target="sideView"
+           class="btn admin">
+          🏆 Leaderboard
+        </a>
+
+        <button onclick="logout()" class="btn logout">
+          🚪 Logout
+        </button>
+      </div>
+    </div>
+
+    <!-- ===== RIGHT PANEL ===== -->
+    <div class="main-card" style="min-height:620px;">
+      <h2>Villager Side Panel</h2>
+
+      <div style="height:540px;border-radius:16px;overflow:hidden;">
+        <iframe
+          name="sideView"
+          src="submit-plastic.html">
+        </iframe>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ================= FOOTER ================= -->
+<footer class="footer">
+  © 2026 Village Plastic Reward System <br>
+  Government Initiative
+</footer>
+
+<!-- ================= SCRIPTS ================= -->
+<script>
+  document.getElementById("vid").innerText =
+    localStorage.getItem("villagerId");
+
+  function logout() {
+    localStorage.removeItem("villagerId");
+    window.location.href = "../login.html";
+  }
+</script>
+
+<script src="../js/login.js"></script>
+
+</body>
+</html>

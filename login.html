@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Villager Login</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="center-page">
+
+  <!-- ================= NAVBAR (ADDED) ================= -->
+  <nav class="navbar">
+    <div class="nav-logo">
+      🌱 Plastic Reward System
+    </div>
+
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="admin-login.html">Admin</a>
+      <a href="./villager/leaderboard.html">Leaderboard</a>
+    </div>
+  </nav>
+
+  <!-- ================= EXISTING LOGIN CARD (UNCHANGED) ================= -->
+  <div class="main-card">
+    <h2>Villager Login</h2>
+
+    <input
+      type="text"
+      id="vid"
+      placeholder="Enter Villager ID"
+    >
+
+    <button onclick="login()">Login</button>
+
+    <a href="index.html" class="back-link">
+      ← Back
+    </a>
+  </div>
+
+  <!-- ================= NEW FOOTER (ADDED) ================= -->
+  <footer class="footer">
+    © 2026 Village Plastic Reward System <br>
+    Government Initiative
+  </footer>
+
+  <!-- ================= EXISTING SCRIPT (UNCHANGED) ================= -->
+  <script>
+    function login() {
+      const id = document.getElementById("vid").value.trim();
+
+      let ids =
+        JSON.parse(localStorage.getItem("approvedIds")) || [];
+
+      if (!ids.includes(id)) {
+        alert("❌ ID not approved");
+        return;
+      }
+
+      localStorage.setItem("villagerId", id);
+      window.location.href = "villager/dashboard.html";
+    }
+  </script>
+
+</body>
+</html>

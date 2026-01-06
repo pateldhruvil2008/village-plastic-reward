@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Village Plastic Reward</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="center-page">
+
+  <!-- ================= NAVBAR ================= -->
+  <nav class="navbar">
+    <div class="nav-logo">🌱 Plastic Reward System</div>
+    <div class="nav-links">
+      <a href="#" onclick="showLoginBox()">Villager Login</a>
+      <a href="admin-login.html">Admin</a>
+      <a href="./villager/leaderboard.html">Leaderboard</a>
+    </div>
+  </nav>
+
+  <!-- ================= LANDING TEXT ================= -->
+  <div id="landingText" style="text-align:center;color:white;">
+    <h1>Village Plastic Reward System</h1>
+    <p class="tagline">Clean Village • Green Future</p>
+  </div>
+
+  <!-- ================= LOGIN BOX ================= -->
+  <div class="main-card" id="mainBox" style="display:none;">
+    <h1>Village Plastic Reward System</h1>
+    <p class="tagline">Clean Village • Green Future</p>
+
+    <div class="btn-group">
+      <a href="login.html" class="btn villager">👨‍🌾 Villager Login</a>
+      <a href="admin-login.html" class="btn admin">🏛 Admin Login</a>
+      <a href="./villager/leaderboard.html" class="btn admin">🏆 Leaderboard</a>
+    </div>
+  </div>
+
+  <!-- ================= AWARENESS SECTION ================= -->
+  <div class="main-card index-videos">
+    <h2>Awareness</h2>
+
+    <!-- INFO BLOCKS (CLEANED) -->
+    <div class="mid-info-block">
+      <div class="info-box">
+        ♻
+        <h3>Collect Plastic</h3>
+        <p>Plastic jama karo</p>
+      </div>
+
+      <div class="info-box">
+        🧮
+        <h3>Submit Weight</h3>
+        <p>KG submit kari points melvo</p>
+      </div>
+
+      <div class="info-box">
+        🏆
+        <h3>Get Rewards</h3>
+        <p>Leaderboard ma naam aave</p>
+      </div>
+    </div>
+
+    <!-- VIDEOS -->
+    <div class="video-row">
+      <video controls class="aw-video">
+        <source src="videos/video1.mp4" type="video/mp4">
+      </video>
+
+      <video controls class="aw-video">
+        <source src="videos/video2.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="footer">
+    © 2026 Village Plastic Reward System <br>
+    Government Initiative
+  </footer>
+
+  <!-- ================= HOW TO USE BUTTON ================= -->
+  <button class="howto-btn" onclick="startGuide()">
+    ▶ How to Use Website
+  </button>
+
+  <!-- ================= GUIDE OVERLAY ================= -->
+  <div id="guideOverlay" class="guide-overlay" style="display:none;">
+    <div class="guide-box">
+      <h2 id="guideTitle"></h2>
+      <p id="guideText"></p>
+
+      <div class="guide-actions">
+        <button onclick="nextStep()">Next</button>
+        <button onclick="closeGuide()">Skip</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= SCRIPTS ================= -->
+  <script>
+    function showLoginBox() {
+      document.getElementById("landingText").style.display = "none";
+      document.getElementById("mainBox").style.display = "block";
+    }
+
+    /* VIDEO CONTROL */
+    const videos = document.querySelectorAll(".aw-video");
+    videos.forEach(v => {
+      v.addEventListener("play", () => {
+        videos.forEach(o => { if (o !== v) o.pause(); });
+      });
+    });
+
+    /* HOW TO USE GUIDE (UPDATED) */
+    let step = 0;
+    const steps = [
+      {
+        title: "Welcome 👋",
+        text: "Aa website village plastic reward system mate che."
+      },
+      {
+        title: "Villager Login 👨‍🌾",
+        text: "Villager potani approved ID thi login kare che."
+      },
+      {
+        title: "Submit Plastic ♻",
+        text: "Plastic nu weight (KG) submit karo ane points melvo."
+      },
+      {
+        title: "Leaderboard 🏆",
+        text: "Badha villagers na points leaderboard ma dekhay che."
+      },
+      {
+        title: "Admin Panel 🏛",
+        text: "Admin villager approve ane manage kare che."
+      }
+    ];
+
+    function startGuide() {
+      step = 0;
+      document.getElementById("guideOverlay").style.display = "flex";
+      showStep();
+    }
+
+    function showStep() {
+      document.getElementById("guideTitle").innerText = steps[step].title;
+      document.getElementById("guideText").innerText = steps[step].text;
+    }
+
+    function nextStep() {
+      step++;
+      if (step >= steps.length) closeGuide();
+      else showStep();
+    }
+
+    function closeGuide() {
+      document.getElementById("guideOverlay").style.display = "none";
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Login</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="center-page">
+
+  <!-- ================= NAVBAR (ADDED) ================= -->
+  <nav class="navbar">
+    <div class="nav-logo">
+      🌱 Plastic Reward System
+    </div>
+
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="login.html">Villager Login</a>
+      <a href="./villager/leaderboard.html">Leaderboard</a>
+    </div>
+  </nav>
+
+  <!-- ================= EXISTING ADMIN LOGIN CARD (UNCHANGED) ================= -->
+  <div class="main-card">
+    <h2>Admin Login</h2>
+    <p class="tagline">Admin / Government Access</p>
+
+    <p>&nbsp;</p>
+
+    <input
+      type="password"
+      id="pass"
+      placeholder="Admin Password"
+    >
+
+    <button onclick="adminLogin()">Login</button>
+
+    <a href="index.html" class="back-link">
+      ← Back to Home
+    </a>
+  </div>
+
+  <!-- ================= FOOTER (ADDED) ================= -->
+  <footer class="footer">
+    © 2026 Village Plastic Reward System <br>
+    Government Initiative
+  </footer>
+
+  <!-- ================= EXISTING SCRIPT (UNCHANGED) ================= -->
+  <script>
+    function adminLogin() {
+      const ADMIN_PASSWORD = "CESD";
+      const pass =
+        document.getElementById("pass").value;
+
+      if (pass === ADMIN_PASSWORD) {
+        // ✅ CORRECT PATH as per your structure
+        window.location.href = "admin/dashboard.html";
+      } else {
+        alert("❌ Wrong password");
+      }
+    }
+  </script>
+
+</body>
+</html>

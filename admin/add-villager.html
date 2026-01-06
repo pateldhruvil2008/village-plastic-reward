@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add / Approve Villager</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body class="center-page">
+
+  <!-- ================= NAVBAR ================= -->
+  <nav class="navbar">
+    <div class="nav-logo">🌱 Plastic Reward System</div>
+    <div class="nav-links">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="../index.html">Home</a>
+    </div>
+  </nav>
+
+  <!-- ================= MAIN CARD ================= -->
+  <div class="main-card">
+    <h2>Add / Approve Villager</h2>
+    <p class="tagline">Government / Admin Access</p>
+
+    <input
+      type="text"
+      id="villagerId"
+      placeholder="Enter Villager ID"
+    >
+
+    <button onclick="approveVillager()">
+      ✅ Approve Villager
+    </button>
+
+    <a href="dashboard.html" class="back-link">
+      ← Back to Dashboard
+    </a>
+  </div>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="footer">
+    © 2026 Village Plastic Reward System <br>
+    Government Initiative
+  </footer>
+
+  <!-- ================= EXISTING LOGIC (UNCHANGED) ================= -->
+  <script>
+    function approveVillager() {
+      const id =
+        document.getElementById("villagerId").value.trim();
+
+      if (!id) {
+        alert("Enter Villager ID");
+        return;
+      }
+
+      let approvedIds =
+        JSON.parse(localStorage.getItem("approvedIds")) || [];
+
+      if (approvedIds.includes(id)) {
+        alert("ID already approved");
+        return;
+      }
+
+      approvedIds.push(id);
+
+      localStorage.setItem(
+        "approvedIds",
+        JSON.stringify(approvedIds)
+      );
+
+      alert("✅ Villager Approved Successfully");
+      document.getElementById("villagerId").value = "";
+    }
+  </script>
+
+</body>
+</html>
